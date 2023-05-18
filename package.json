@@ -1,0 +1,19 @@
+{
+  "name": "company-app",
+  "productName": "LEARNLEE Tutors App",
+  "version": "1.0.0",
+  "description": "App project for company",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Zain Ali",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.1.2",
+    "electron": "^22.0.0",
+    "mongodb": "^4.13.0",
+    "sqlite3": "^5.1.4",
+    "toastify-js": "^1.12.0"
+  }
+}

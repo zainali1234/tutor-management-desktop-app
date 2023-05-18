@@ -1,0 +1,471 @@
+/* The sidebar menu */
+body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    /* Full-height: remove this if you want "auto" height */
+    width: 20%;
+    /* Set the width of the sidebar */
+    position: fixed;
+    /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    left: 0;
+    background-color: rgb(32, 33, 32);
+    /* Black */
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding-top: 30px;
+}
+
+/* The navigation menu links */
+.sidenav button {
+    background-color: rgb(32, 33, 32);
+    padding: 8px 0px 6px 0px;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 27px;
+    width: 100%;
+    color: #818181;
+    display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav button:hover {
+    color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Style page content */
+.main {
+    height: 100%;
+    /* Full-height: remove this if you want "auto" height */
+    width: 80%;
+    /* Set the width of the sidebar */
+    position: fixed;
+    /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    right: 0;
+    background-color: #95c685;
+    overflow-x: hidden;
+    /* Enable horizontal scrolling */
+    overflow-y: scroll;
+    /* Disable vertical scrolling */
+}
+
+.top-bar {
+    margin: 0;
+    background-color: #499a2e;
+    height: 10%;
+    position: relative;
+    padding-top: 15px;
+    padding-left: 17px;
+}
+
+.top-bar-title {
+    margin: 0;
+}
+
+.tutor-page,
+.student-page,
+.add-tutor-page,
+.find-tutor-page,
+.add-student-page,
+.find-student-page {
+    margin-top: 20px;
+}
+
+.dashboard-page,
+.about-page,
+.add-tutor-page,
+.find-tutor-page,
+.add-student-page,
+.find-student-page,
+.edit-page {
+    margin-left: 18px;
+    margin-top: 20px;
+}
+
+.info-container {
+    display: flex;
+}
+
+.sub-info-container{
+    outline: 1px solid black; /* 2px width solid black outline */
+    width: 48%;
+    height: 220px;
+}
+
+.stats-section {
+    outline: 1px solid black; /* 2px width solid black outline */
+    margin: 0;
+    width: 100%;
+    height: 50%;
+    display: flex;
+}
+
+.stats-element {
+    outline: 1px solid black; /* 2px width solid black outline */
+    margin: 0;
+    flex: 1;
+    display: inline-block;
+}
+
+.stats-graph {
+    outline: 1px solid rgb(164, 125, 125); /* 2px width solid black outline */
+    width: 48%;
+    height: 220px;
+}
+
+#shared-availability {
+    margin-left: 31px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1em;
+}
+.shared-availability-name {
+    text-decoration: underline;
+}
+
+.add-tutor-page,.add-student-page{
+    margin-right: 17px;
+}
+
+.student-page button,
+.tutor-page button {
+    background-color: #4CAF50;
+    border: none;
+    font-family: inherit;
+    color: black;
+    padding: 12px 26px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 20px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.back-button {
+    background-color: #4CAF50;
+    border: none;
+    color: rgb(8, 8, 8);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.student-page button:hover,
+.tutor-page button:hover,
+.back-button:hover {
+    /* Styles that will be applied when the cursor hovers over the button */
+    background-color: #3e8e41;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Form for submitting information to the database*/
+form {
+    width: 540px;
+    margin: 0 auto;
+    text-align: left;
+    font-family: inherit;
+}
+
+label {
+    display: block;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: inherit;
+}
+
+select {
+    width: 100%;
+    padding: 10px 16px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: black;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.time-element {
+    display: inline-block;
+    width: 18%;
+}
+
+.p-element {
+    margin-left: 3px;
+    margin-right: 3px;
+    display: inline;
+}
+
+.check-label {
+    font-weight: normal;
+    display: inline;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.check-symbol {
+    display: inline;
+}
+
+.day-label {
+    font-weight: normal;
+}
+
+.add-tutor-alert,
+.add-student-alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    width: 93%;
+}
+
+.add-timing, .student-add-timing {
+    margin-right: 5px;
+}
+.sub-timing, .student-sub-timing {
+    margin-right: 5px;
+}
+
+.add-timing:hover, .student-add-timing:hover, 
+.sub-timing:hover, .student-sub-timing:hover {
+    cursor: pointer;
+}
+
+.tutor-table,
+.student-table {
+    border-collapse: collapse;
+    /* merge cells into a single border */
+    border: 1px solid black;
+    /* add a 1-pixel solid black border */
+    margin-top: 14px;
+    width: 100%;
+}
+
+.tutor-table td,
+th,
+.student-table td,
+th {
+    border-collapse: collapse;
+    /* merge cells into a single border */
+    border: 1px solid black;
+    /* add a 1-pixel solid black border */
+    text-align: center;
+}
+
+.tutor-table-name {
+    width: 16%;
+}
+
+.tutor-table-subjects {
+    width: 50%;
+}
+
+.tutor-table-students {
+    width: 35%;
+}
+
+.tutor-table tr {
+    height: 60px;
+}
+
+.student-table tr {
+    height: 60px;
+}
+
+.student-row:hover,
+.tutor-row:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.student-table-id {
+    width: 5%;
+}
+
+.student-table-name {
+    width: 15%;
+}
+
+.student-table-parent-name {
+    width: 15%;
+}
+
+.student-table-subjects {
+    width: 30%;
+}
+
+.student-table-tutors {
+    width: 35%;
+}
+
+.select-tutors-container {
+    display: flex;
+}
+
+.select-tutors {
+    width: 60%;
+    display: inline;
+    margin-right: 75px;
+}
+
+.select-tutor-button {
+    font: inherit;
+    width: 33%;
+    background-color: #4CAF50;
+    color: black;
+    padding: 10px 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.select-tutor-button:hover {
+    background-color: #45a049;
+    cursor: pointer;
+}
+
+.select-tutor-sort {
+    width: 40%;
+    display: inline;
+}
+
+.refresh-students-button {
+    font-family: Lucida Sans Unicode;
+    position: absolute;
+    right: 33px;
+}
+
+.refresh-tutors-button {
+    font-family: Lucida Sans Unicode;
+    position: absolute;
+    right: 33px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    overflow: auto;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 34%;
+    height: 72%;
+    border-radius: 7px;
+    margin-top: 55px;
+}
+
+.delete-button, .edit-button {
+    background-color: #ff0000 !important; 
+    color: #fff !important;
+    font-size: 16px !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+    align-items: center !important;
+    transition: background-color 0.3s ease !important; 
+    width: 88% !important; 
+}
+
+.edit-button {
+    background-color: #45a049 !important; 
+}
+
+.close-modal {
+    color: #aaaaaa;
+    float: right;
+    font-size: 38px;
+    font-weight: bold;
+}
+.close-modal:hover,
+.close-modal:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.weekday-info {
+    font-weight: initial;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav button {
+        font-size: 18px;
+    }
+}

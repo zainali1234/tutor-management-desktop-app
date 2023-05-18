@@ -1,0 +1,3145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="js/renderer.js" defer></script>
+    <script src="js/formHandler.js" defer></script>
+    <script src="js/formRenderer.js" defer></script>
+    <title>LEARNLEE Application</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Side navigation -->
+    <div class="sidenav">
+        <button id="dashboard">Dashboard</button>
+        <button id="manage-tutors">Manage Tutors</button>
+        <button id="manage-students">Manage Students</button>
+        <button id="about">About</button>
+    </div>
+    <!-- Page content -->
+    <div class="main" id="main">
+        <div class="top-bar">
+            <h1 class="top-bar-title" id="top-bar-title">Dashboard</h1>
+        </div>
+        <div class="dashboard-page" id="dashboard-page">
+            <h1>Welcome!</h1>
+            <div class="info-container">
+                <div class="sub-info-container">
+                    <div class="stats-section">
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="tutor-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">Total Tutors</h4>
+                        </div>
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="new-tutor-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">New Tutors</h4>
+                        </div>
+                    </div>
+                    <div class="stats-section">
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="tutor-with-student-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">Tutors with Students</h4>
+                        </div>
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="tutor-without-student-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">Tutors without Students</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="sub-info-container">
+                    <div class="stats-section">
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="student-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">Total Students</h4>
+                        </div>
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="new-student-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">New Students</h4>
+                        </div>
+                    </div>
+                    <div class="stats-section">
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="student-with-tutor-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">Students with Tutor</h4>
+                        </div>
+                        <div class="stats-element">
+                            <h2 style="margin-left: 9px;" id="student-without-tutor-number-stat">0</h2>
+                            <h4 style="margin-left: 9px;">Students without Tutor</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tutor-page" id="tutor-page" style='display: none'>
+            <button id="add-tutor-button">Add a new tutor.</button>
+            <button id="find-tutor-button" style="display:none;">Find a tutor for a student.</button>
+            <button class="refresh-tutors-button" id="refresh-tutors-button">
+                &#x21bb;
+            </button>
+            <div id="tutor-modal" class="modal">
+                <div id="tutor-modal-content" class="modal-content">
+                    <span id="tutor-close-modal" class="close-modal">&times;</span>
+                    <h2>Name:<span id="tutor-name-modal" style="font-weight: initial;"></span></h2>
+                    <h3>Date Added:<span id="tutor-date-modal" style="font-weight: initial;"></span></h3>
+                    <h3>Email:<span id="tutor-email-modal" style="font-weight: initial;"></span> </h3>
+                    <h3>Phone Number:<span id="tutor-number-modal" style="font-weight: initial;"></span> </h3>
+                    <h3>Subjects:<span id="tutor-subjects-modal" style="font-weight: initial;"></span></h3>
+                    <h3 >Location Status:<span id="tutor-location-modal" style="font-weight: initial;"></span> </h3>
+                    <h3>Availability:</h3>
+                    <h4 class="weekday-info">Monday: <span id="tutor-monday-info"></span></h4>
+                    <h4 class="weekday-info">Tuesday: <span id="tutor-tuesday-info"></span></h4>
+                    <h4 class="weekday-info">Wednesday: <span id="tutor-wednesday-info"></span></h4>
+                    <h4 class="weekday-info">Thursday: <span id="tutor-thursday-info"></span></h4>
+                    <h4 class="weekday-info">Friday: <span id="tutor-friday-info"></span></h4>
+                    <h4 class="weekday-info">Saturday: <span id="tutor-saturday-info"></span></h4>
+                    <h4 class="weekday-info">Sunday: <span id="tutor-sunday-info"></span></h4>
+                    <h4> Other Info: 
+                        <span id="tutor-other-info" style="font-weight: initial;"></span>
+                    </h4>
+                    <h4>Students: <span id="tutor-student-list" style="font-weight: initial;"></span></h4>
+                    <button class="edit-button" id="edit-tutor" style="display: none">Edit Tutor</button>
+                    <button class="delete-button" id="delete-tutor">Delete Tutor</button>
+                </div>
+            </div>
+            <table class="tutor-table" id="tutor-table">
+                <tr class="tutor-details" id="tutor-details">
+                  <th id="tutor-details" class="tutor-table-name">Tutor Name</th>
+                  <th id="tutor-details" class="tutor-table-subjects">Subjects</th>
+                  <th id="tutor-details" class="tutor-table-students">Students</th>
+                </tr>
+            </table>
+        </div>
+        <div class="student-page" id="student-page" style='display: none'>
+            <button id="add-student-button">Add a new student.</button>
+            <button id="find-student-button" style="display:none;">Find a student for a tutor.</button>
+            <button class="refresh-students-button" id="refresh-students-button" >
+                &#x21bb;
+            </button>
+            <div id="student-modal" class="modal">
+                <div id="student-modal-content" class="modal-content">
+                    <span id="student-close-modal" class="close-modal">&times;</span>
+                    <h2>Name:<span id="student-name-modal" style="font-weight: initial;"></span></h2>
+                    <h3>Date Added:<span id="student-date-modal" style="font-weight: initial;"></span></h3>
+                    <h3>Phone Number:<span id="student-number-modal" style="font-weight: initial;"></span> </h3>
+                    <h3>Parent Name:<span id="parent-name-modal" style="font-weight: initial;"></span></h3>
+                    <h3>Parent Email:<span id="parent-email-modal" style="font-weight: initial;"></span> </h3>
+                    <h3>Parent Phone Number:<span id="parent-number-modal" style="font-weight: initial;"></span> </h3>
+                    <h3>Subjects:<span id="student-subjects-modal" style="font-weight: initial;"></span></h3>
+                    <h3>Location Status:<span id="student-location-modal" style="font-weight: initial;"></span> </h3>
+                    <h3>Availability:</h3>
+                    <h4 class="weekday-info">Monday: <span id="student-monday-info">1 PM to 5 PM</span></h4>
+                    <h4 class="weekday-info">Tuesday: <span id="student-tuesday-info">1 PM to 5 PM</span></h4>
+                    <h4 class="weekday-info">Wednesday: <span id="student-wednesday-info">1 PM to 5 PM</span></h4>
+                    <h4 class="weekday-info">Thursday: <span id="student-thursday-info">1 PM to 5 PM</span></h4>
+                    <h4 class="weekday-info">Friday: <span id="student-friday-info">1 PM to 5 PM</span></h4>
+                    <h4 class="weekday-info">Saturday: <span id="student-saturday-info">1 PM to 5 PM</span></h4>
+                    <h4 class="weekday-info">Sunday: <span id="student-sunday-info">1 PM to 5 PM</span></h4>
+                    <h4> Other Info: 
+                        <span id="student-other-info" style="font-weight: initial;"></span>
+                    </h4>
+                    <h4>Tutor: <span id="student-tutor" style="font-weight: initial;"></span></h4>
+                    <button class="edit-button" id="edit-student" style="display: none">Edit Student</button>
+                    <button class="delete-button" id="delete-student">Delete Student</button>
+                </div>
+            </div>
+            <table class="student-table" id="student-table">
+                <tr class="student-details" id="student-details">
+                  <th id="student-details" class="student-table-name">Student Name</th>
+                  <th id="student-details" class="student-table-parent-name">Parent Name</th>
+                  <th id="student-details" class="student-table-subjects">Subjects</th>
+                  <th id="student-details" class="student-table-tutors">Tutor</th>
+                </tr>
+            </table>
+        </div>
+        <div class="about-page" id="about-page" style='display: none'>
+            <h2>About this app</h2>
+            <p>
+                This is a web-based application that allows the user to manage
+                employees and assign them to students.
+            </p>
+            <p>
+                With this app, you can easily view and edit employee information,
+                such as their contact details and availability. You can also assign employees to tutors
+                and track their information.
+            </p>
+            <p>
+                This is designed to be user-friendly and easy to use, making it the perfect
+                tool to manage tutor employees and tutoring sessions.
+            </p>
+        </div>
+        <div class="edit-page" id="edit-tutor-page" style='display: none'>
+        
+        </div>
+        <div class="add-tutor-page" id="add-tutor-page" style='display: none'>
+            <button class="back-button" id="back-add-tutor-page">Back</button>
+            <form id="add-tutor-form">
+                <label style="margin-left: 30px;" for="tutor-name">Tutor Name:</label><br>
+                <input style="margin-left: 30px;" type="text" id="tutor-name" name="tutor-name"><br>
+                <br>
+                <label style="margin-left: 30px;" for="tutor-email">Tutor Email:</label><br>
+                <input style="margin-left: 30px;" type="text" id="tutor-email" name="tutor-email"><br>
+                <br>
+                <label style="margin-left: 30px;" for="tutor-phone-number">Tutor Phone Number (Enter all 0s if N/A):</label><br>
+                <input style="margin-left: 30px;" type="text" id="tutor-phone-number" name="tutor-phone-number"><br>
+                <br>
+                <label style="margin-left: 30px;"  for="tutor-subjects">Select their familiar subject(s) (Press Ctrl to select 
+                    multiple entries):</label><br>
+                <select style="margin-left: 30px;"  name="tutor-subjects" id="tutor-subjects" multiple>
+                    <option value="1st - 5th Grade Math">1st - 5th Grade Math</option>
+                    <option value="6th - 8th Grade Math">6th - 8th Grade Math</option>
+                    <option value="Algebra">Algebra</option>
+                    <option value="Geometry">Geometry</option>
+                    <option value="Algebra 2">Algebra II</option>
+                    <option value="Calculus">Calculus</option>
+                    <option value="Calculus 2">Calculus II</option>
+                    <option value="Statistics">Statistics</option>
+                    <option value="SAT Math">SAT Math</option>
+                    <option value="1st - 5th Grade English">1st - 5th Grade English</option>
+                    <option value="1st - 5th Grade Reading">1st - 5th Grade Reading</option>
+                    <option value="6th - 8th Grade English">6th - 8th Grade English</option>
+                    <option value="6th - 8th Grade Reading">6th - 8th Grade Reading</option>
+                    <option value="High School English">High School English</option>
+                    <option value="High School Reading">High School Reading</option>
+                    <option value="SAT English">SAT English</option>
+                    <option value="US History">US History</option>
+                    <option value="World History">World History</option>
+                    <option value="Economics">Economics</option>
+                    <option value="Government">Government</option>
+                    <option value="Geography">Geography</option>
+                    <option value="1st - 5th Grade Science">1st - 5th Grade Science</option>
+                    <option value="6th - 8th Grade Science">6th - 8th Grade Science</option>
+                    <option value="Biology">Biology</option>
+                    <option value="Advanced-biology">Biology (Advanced)</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Advanced Chemistry">Chemistry (Advanced)</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Advanced Physics">Physics (Advanced)</option>
+                    <option value="Astronomy">Astronomy</option>
+                    <option value="Computer Science">Computer Science</option>
+                </select>
+                <br><br>
+                <label style="margin-left: 30px;"  for="location-status">In person or remote?</label><br>
+                <select style="margin-left: 30px;"  name="location-status" id="location-status">
+                    <option value="In Person">In Person</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Both">Both</option>
+                </select>
+                <br><br>
+                <label style="margin-left: 30px;">Weekly Availability:</label><br>
+                <label style="margin-left: 30px;" class="day-label">Monday:</label>
+                <button class="add-timing" type="button" id="add-monday">&plus;</button>
+                <select class="time-element" id="start-time-monday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="start-ampm-monday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="end-time-monday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="end-ampm-monday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="monday-check" type="checkbox">
+                <p style="display:inline;" for="monday-check">None</p>
+                <!-- Added button -->
+                <div id="add-monday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="sub-timing" type="button" id="sub-monday-1">&minus;</button>
+                    <select class="time-element" id="start-time-monday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-monday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-monday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-monday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="add-monday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="sub-timing" type="button" id="sub-monday-2">&minus;</button>
+                    <select class="time-element" id="start-time-monday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-monday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-monday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-monday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Tuesday:</label>
+                <button class="add-timing" id="add-tuesday" type="button" >&plus;</button>
+                <select class="time-element" id="start-time-tuesday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="start-ampm-tuesday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="end-time-tuesday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="end-ampm-tuesday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="tuesday-check" type="checkbox">
+                <p style="display:inline;" for="tuesday-check">None</p>
+                    <!-- Added button -->
+                    <div id="add-tuesday-timing-1" style="display: none;">
+                        <!-- Remove button -->
+                        <button class="sub-timing" type="button" id="sub-tuesday-1">&minus;</button>
+                        <select class="time-element" id="start-time-tuesday-1" name="start-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="start-ampm-tuesday-1" name="start-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                        <p class="p-element">to</p>
+                        <select class="time-element" id="end-time-tuesday-1" name="end-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="end-ampm-tuesday-1" name="end-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                    </div>
+                    <!-- Added button 2-->
+                    <div id="add-tuesday-timing-2" style="display: none;">
+                        <!-- Remove button 2-->
+                        <button class="sub-timing" type="button" id="sub-tuesday-2">&minus;</button>
+                        <select class="time-element" id="start-time-tuesday-2" name="start-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="start-ampm-tuesday-2" name="start-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                        <p class="p-element">to</p>
+                        <select class="time-element" id="end-time-tuesday-2" name="end-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="end-ampm-tuesday-2" name="end-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                    </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Wednesday:</label>
+                <button id="add-wednesday" class="add-timing" type="button">&plus;</button>
+                <select class="time-element" id="start-time-wednesday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="start-ampm-wednesday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="end-time-wednesday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="end-ampm-wednesday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="wednesday-check" type="checkbox">
+                <p style="display:inline;" for="wednesday-check">None</p>
+                <!-- Added button -->
+                <div id="add-wednesday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="sub-timing" type="button" id="sub-wednesday-1">&minus;</button>
+                    <select class="time-element" id="start-time-wednesday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-wednesday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-wednesday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-wednesday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="add-wednesday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="sub-timing" type="button" id="sub-wednesday-2">&minus;</button>
+                    <select class="time-element" id="start-time-wednesday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-wednesday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-wednesday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-wednesday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Thursday:</label>
+                <button id="add-thursday" class="add-timing" type="button">&plus;</button>
+                <select class="time-element" id="start-time-thursday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="start-ampm-thursday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="end-time-thursday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="end-ampm-thursday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="thursday-check" type="checkbox">
+                <p style="display:inline;" for="thursday-check">None</p>
+                <!-- Added button -->
+                <div id="add-thursday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="sub-timing" type="button" id="sub-thursday-1">&minus;</button>
+                    <select class="time-element" id="start-time-thursday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-thursday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-thursday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-thursday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="add-thursday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="sub-timing" type="button" id="sub-thursday-2">&minus;</button>
+                    <select class="time-element" id="start-time-thursday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-thursday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-thursday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-thursday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Friday:</label>
+                <button id="add-friday"class="add-timing" type="button">&plus;</button>
+                <select class="time-element" id="start-time-friday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="start-ampm-friday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="end-time-friday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="end-ampm-friday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="friday-check" type="checkbox">
+                <p style="display:inline;" for="friday-check">None</p>
+                <!-- Added button -->
+                <div id="add-friday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="sub-timing" type="button" id="sub-friday-1">&minus;</button>
+                    <select class="time-element" id="start-time-friday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-friday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-friday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-friday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="add-friday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="sub-timing" type="button" id="sub-friday-2">&minus;</button>
+                    <select class="time-element" id="start-time-friday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-friday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-friday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-friday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Saturday:</label>
+                <button id="add-saturday"class="add-timing" type="button">&plus;</button>
+                <select class="time-element" id="start-time-saturday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="start-ampm-saturday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="end-time-saturday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="end-ampm-saturday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="saturday-check" type="checkbox">
+                <p style="display:inline;" for="saturday-check">None</p>
+                <!-- Added button -->
+                <div id="add-saturday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="sub-timing" type="button" id="sub-saturday-1">&minus;</button>
+                    <select class="time-element" id="start-time-saturday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-saturday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-saturday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-saturday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="add-saturday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="sub-timing" type="button" id="sub-saturday-2">&minus;</button>
+                    <select class="time-element" id="start-time-saturday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-saturday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-saturday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-saturday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Sunday:</label>
+                <button id="add-sunday" class="add-timing" type="button">&plus;</button>
+                <select class="time-element" id="start-time-sunday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="start-ampm-sunday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="end-time-sunday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="end-ampm-sunday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="sunday-check" type="checkbox">
+                <p style="display:inline;" for="sunday-check">None</p>
+                <!-- Added button -->
+                <div id="add-sunday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="sub-timing" type="button" id="sub-sunday-1">&minus;</button>
+                    <select class="time-element" id="start-time-sunday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-sunday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-sunday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-sunday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="add-sunday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="sub-timing" type="button" id="sub-sunday-2">&minus;</button>
+                    <select class="time-element" id="start-time-sunday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="start-ampm-sunday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="end-time-sunday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="end-ampm-sunday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <br>
+                <label style="margin-left: 30px;" for="other-info">Other info:</label><br>
+                <textarea style="margin-left: 30px;" id="other-info" name="other-info" rows="3" cols="30"></textarea><br>
+                <br>
+                <div class="add-tutor-alert" style='display: none; margin-left: 30px;'></div>
+                <input style="margin-left: 30px;" type="submit" value="Submit">
+            </form>
+        </div>
+        <div class="find-tutor-page" id="find-tutor-page" style='display: none'>
+            <button class="back-button" id="back-find-tutor-page">Back</button>
+        </div>
+        <div class="add-student-page" id="add-student-page" style='display: none'>
+            <button class="back-button" id="back-add-student-page">Back</button>
+            <form id="add-student-form">
+                <label style="margin-left: 30px;" for="student-name">Student Name:</label><br>
+                <input style="margin-left: 30px;" type="text" id="student-name" name="student-name"><br>
+                <br>
+                <label style="margin-left: 30px;" for="student-phone-number">Student Phone Number (Enter all 0s if N/A):</label><br>
+                <input style="margin-left: 30px;" type="text" id="student-phone-number" name="student-phone-number"><br>
+                <br>
+                <label style="margin-left: 30px;" for="parent-name">Parent Name:</label><br>
+                <input style="margin-left: 30px;" type="text" id="parent-name" name="student-name"><br>
+                <br>
+                <label style="margin-left: 30px;" for="parent-email">Parent Email:</label><br>
+                <input style="margin-left: 30px;" type="text" id="parent-email" name="student-email"><br>
+                <br>
+                <label style="margin-left: 30px;" for="parent-phone-number">Parent Phone Number (Enter all 0s if N/A):</label><br>
+                <input style="margin-left: 30px;" type="text" id="parent-phone-number" name="student-phone-number"><br>
+                <br>
+                <label style="margin-left: 30px;" for="student-subjects">Select the subject(s) the student needs tutoring for:</label><br>
+                <select style="margin-left: 30px;" name="student-subjects" id="student-subjects" multiple>
+                    <option value="1st - 5th Grade Math">1st - 5th Grade Math</option>
+                    <option value="6th - 8th Grade Math">6th - 8th Grade Math</option>
+                    <option value="Algebra">Algebra</option>
+                    <option value="Geometry">Geometry</option>
+                    <option value="Algebra 2">Algebra II</option>
+                    <option value="Calculus">Calculus</option>
+                    <option value="Calculus-2">Calculus II</option>
+                    <option value="Statistics">Statistics</option>
+                    <option value="SAT Math">SAT Math</option>
+                    <option value="1st - 5th Grade English">1st - 5th Grade English</option>
+                    <option value="1st - 5th Grade Reading">1st - 5th Grade Reading</option>
+                    <option value="6th - 8th Grade English">6th - 8th Grade English</option>
+                    <option value="6th - 8th Grade Reading">6th - 8th Grade Reading</option>
+                    <option value="High School English">High School English</option>
+                    <option value="High School Reading">High School Reading</option>
+                    <option value="SAT English">SAT English</option>
+                    <option value="US History">US History</option>
+                    <option value="World History">World History</option>
+                    <option value="Economics">Economics</option>
+                    <option value="Government">Government</option>
+                    <option value="Geography">Geography</option>
+                    <option value="1st - 5th Grade Science">1st - 5th Grade Science</option>
+                    <option value="6th - 8th Grade Science">6th - 8th Grade Science</option>
+                    <option value="Biology">Biology</option>
+                    <option value="Advanced-biology">Biology (Advanced)</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Advanced Chemistry">Chemistry (Advanced)</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Advanced Physics">Physics (Advanced)</option>
+                    <option value="Astronomy">Astronomy</option>
+                    <option value="Computer Science">Computer Science</option>
+                </select>
+                <br><br>
+                <label style="margin-left: 30px;" for="student-location-status">In person or remote?</label><br>
+                <select style="margin-left: 30px;" name="student-location-status" id="student-location-status">
+                    <option value="In Person">In Person</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Both">Both</option>
+                </select>
+                <br><br>
+                <label style="margin-left: 30px;" >Weekly Availability:</label><br>
+                <label style="margin-left: 30px;" class="day-label">Monday:</label>
+                <button id="student-add-monday" class="student-add-timing" type="button">&plus;</button>
+                <select class="time-element" id="student-start-time-monday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-start-ampm-monday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="student-end-time-monday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-end-ampm-monday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="s-monday-check" type="checkbox">
+                <p style="display:inline;" for="s-monday-check">None</p>
+                <!-- Added button -->
+                <div id="student-add-monday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="student-sub-timing" type="button" id="student-sub-monday-1">&minus;</button>
+                    <select class="time-element" id="student-start-time-monday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-monday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-monday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-monday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="student-add-monday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="student-sub-timing" type="button" id="student-sub-monday-2">&minus;</button>
+                    <select class="time-element" id="student-start-time-monday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-monday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-monday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-monday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Tuesday:</label>
+                <button id="student-add-tuesday" class="student-add-timing" type="button">&plus;</button>
+                <select class="time-element" id="student-start-time-tuesday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-start-ampm-tuesday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="student-end-time-tuesday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-end-ampm-tuesday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="s-tuesday-check" type="checkbox">
+                <p style="display:inline;" for="s-tuesday-check">None</p>
+                    <!-- Added button -->
+                    <div id="student-add-tuesday-timing-1" style="display: none;">
+                        <!-- Remove button -->
+                        <button class="student-sub-timing" type="button" id="student-sub-tuesday-1">&minus;</button>
+                        <select class="time-element" id="student-start-time-tuesday-1" name="start-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="student-start-ampm-tuesday-1" name="start-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                        <p class="p-element">to</p>
+                        <select class="time-element" id="student-end-time-tuesday-1" name="end-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="student-end-ampm-tuesday-1" name="end-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                    </div>
+                    <!-- Added button 2-->
+                    <div id="student-add-tuesday-timing-2" style="display: none;">
+                        <!-- Remove button 2-->
+                        <button class="student-sub-timing" type="button" id="student-sub-tuesday-2">&minus;</button>
+                        <select class="time-element" id="student-start-time-tuesday-2" name="start-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="student-start-ampm-tuesday-2" name="start-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                        <p class="p-element">to</p>
+                        <select class="time-element" id="student-end-time-tuesday-2" name="end-time">
+                            <option value="1">1:00</option>
+                            <option value="1.5">1:30</option>
+                            <option value="2">2:00</option>
+                            <option value="2.5">2:30</option>
+                            <option value="3">3:00</option>
+                            <option value="3.5">3:30</option>
+                            <option value="4">4:00</option>
+                            <option value="4.5">4:30</option>
+                            <option value="5">5:00</option>
+                            <option value="5.5">5:30</option>
+                            <option value="6">6:00</option>
+                            <option value="6.5">6:30</option>
+                            <option value="7">7:00</option>
+                            <option value="7.5">7:30</option>
+                            <option value="8">8:00</option>
+                            <option value="8.5">8:30</option>
+                            <option value="9">9:00</option>
+                            <option value="9.5">9:30</option>
+                            <option value="10">10:00</option>
+                            <option value="10.5">10:30</option>
+                            <option value="11">11:00</option>
+                            <option value="11.5">11:30</option>
+                            <option value="12">12:00</option>
+                            <option value="12.5">12:30</option>
+                        </select>
+                        <select class="time-element" id="student-end-ampm-tuesday-2" name="end-ampm">
+                            <option value="am">AM</option>
+                            <option value="pm">PM</option>
+                        </select>
+                    </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Wednesday:</label>
+                <button id="student-add-wednesday" class="student-add-timing" type="button">&plus;</button>
+                <select class="time-element" id="student-start-time-wednesday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-start-ampm-wednesday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="student-end-time-wednesday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-end-ampm-wednesday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="s-wednesday-check" type="checkbox">
+                <p style="display:inline;" for="s-wednesday-check">None</p>
+                <!-- Added button -->
+                <div id="student-add-wednesday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="student-sub-timing" type="button" id="student-sub-wednesday-1">&minus;</button>
+                    <select class="time-element" id="student-start-time-wednesday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-wednesday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-wednesday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-wednesday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="student-add-wednesday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="student-sub-timing" type="button" id="student-sub-wednesday-2">&minus;</button>
+                    <select class="time-element" id="student-start-time-wednesday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-wednesday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-wednesday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-wednesday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Thursday:</label>
+                <button id="student-add-thursday" class="student-add-timing" type="button">&plus;</button>
+                <select class="time-element" id="student-start-time-thursday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-start-ampm-thursday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="student-end-time-thursday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-end-ampm-thursday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="s-thursday-check" type="checkbox">
+                <p style="display:inline;" for="s-thursday-check">None</p>
+                <!-- Added button -->
+                <div id="student-add-thursday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="student-sub-timing" type="button" id="student-sub-thursday-1">&minus;</button>
+                    <select class="time-element" id="student-start-time-thursday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-thursday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-thursday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-thursday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="student-add-thursday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="student-sub-timing" type="button" id="student-sub-thursday-2">&minus;</button>
+                    <select class="time-element" id="student-start-time-thursday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-thursday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-thursday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-thursday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Friday:</label>
+                <button id="student-add-friday" class="student-add-timing" type="button">&plus;</button>
+                <select class="time-element" id="student-start-time-friday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-start-ampm-friday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="student-end-time-friday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-end-ampm-friday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="s-friday-check" type="checkbox">
+                <p style="display:inline;" for="s-friday-check">None</p>
+                <!-- Added button -->
+                <div id="student-add-friday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="student-sub-timing" type="button" id="student-sub-friday-1">&minus;</button>
+                    <select class="time-element" id="student-start-time-friday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-friday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-friday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-friday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="student-add-friday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="student-sub-timing" type="button" id="student-sub-friday-2">&minus;</button>
+                    <select class="time-element" id="student-start-time-friday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-friday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-friday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-friday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Saturday:</label>
+                <button id="student-add-saturday" class="student-add-timing" type="button">&plus;</button>
+                <select class="time-element" id="student-start-time-saturday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-start-ampm-saturday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="student-end-time-saturday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-end-ampm-saturday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="s-saturday-check" type="checkbox">
+                <p style="display:inline;" for="s-saturday-check">None</p>
+                <!-- Added button -->
+                <div id="student-add-saturday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="student-sub-timing" type="button" id="student-sub-saturday-1">&minus;</button>
+                    <select class="time-element" id="student-start-time-saturday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-saturday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-saturday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-saturday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="student-add-saturday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="student-sub-timing" type="button" id="student-sub-saturday-2">&minus;</button>
+                    <select class="time-element" id="student-start-time-saturday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-saturday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-saturday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-saturday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br>
+                <label style="margin-left: 30px;" class="day-label">Sunday:</label>
+                <button id="student-add-sunday" class="student-add-timing" type="button">&plus;</button>
+                <select class="time-element" id="student-start-time-sunday" name="start-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-start-ampm-sunday" name="start-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <p class="p-element">to</p>
+                <select class="time-element" id="student-end-time-sunday" name="end-time">
+                    <option value="1">1:00</option>
+                    <option value="1.5">1:30</option>
+                    <option value="2">2:00</option>
+                    <option value="2.5">2:30</option>
+                    <option value="3">3:00</option>
+                    <option value="3.5">3:30</option>
+                    <option value="4">4:00</option>
+                    <option value="4.5">4:30</option>
+                    <option value="5">5:00</option>
+                    <option value="5.5">5:30</option>
+                    <option value="6">6:00</option>
+                    <option value="6.5">6:30</option>
+                    <option value="7">7:00</option>
+                    <option value="7.5">7:30</option>
+                    <option value="8">8:00</option>
+                    <option value="8.5">8:30</option>
+                    <option value="9">9:00</option>
+                    <option value="9.5">9:30</option>
+                    <option value="10">10:00</option>
+                    <option value="10.5">10:30</option>
+                    <option value="11">11:00</option>
+                    <option value="11.5">11:30</option>
+                    <option value="12">12:00</option>
+                    <option value="12.5">12:30</option>
+                </select>
+                <select class="time-element" id="student-end-ampm-sunday" name="end-ampm">
+                    <option value="am">AM</option>
+                    <option value="pm">PM</option>
+                </select>
+                <input id="s-sunday-check" type="checkbox">
+                <p style="display:inline;" for="s-sunday-check">None</p>
+                <!-- Added button -->
+                <div id="student-add-sunday-timing-1" style="display: none;">
+                    <!-- Remove button -->
+                    <button class="student-sub-timing" type="button" id="student-sub-sunday-1">&minus;</button>
+                    <select class="time-element" id="student-start-time-sunday-1" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-sunday-1" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-sunday-1" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-sunday-1" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <!-- Added button 2-->
+                <div id="student-add-sunday-timing-2" style="display: none;">
+                    <!-- Remove button 2-->
+                    <button class="student-sub-timing" type="button" id="student-sub-sunday-2">&minus;</button>
+                    <select class="time-element" id="student-start-time-sunday-2" name="start-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-start-ampm-sunday-2" name="start-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                    <p class="p-element">to</p>
+                    <select class="time-element" id="student-end-time-sunday-2" name="end-time">
+                        <option value="1">1:00</option>
+                        <option value="1.5">1:30</option>
+                        <option value="2">2:00</option>
+                        <option value="2.5">2:30</option>
+                        <option value="3">3:00</option>
+                        <option value="3.5">3:30</option>
+                        <option value="4">4:00</option>
+                        <option value="4.5">4:30</option>
+                        <option value="5">5:00</option>
+                        <option value="5.5">5:30</option>
+                        <option value="6">6:00</option>
+                        <option value="6.5">6:30</option>
+                        <option value="7">7:00</option>
+                        <option value="7.5">7:30</option>
+                        <option value="8">8:00</option>
+                        <option value="8.5">8:30</option>
+                        <option value="9">9:00</option>
+                        <option value="9.5">9:30</option>
+                        <option value="10">10:00</option>
+                        <option value="10.5">10:30</option>
+                        <option value="11">11:00</option>
+                        <option value="11.5">11:30</option>
+                        <option value="12">12:00</option>
+                        <option value="12.5">12:30</option>
+                    </select>
+                    <select class="time-element" id="student-end-ampm-sunday-2" name="end-ampm">
+                        <option value="am">AM</option>
+                        <option value="pm">PM</option>
+                    </select>
+                </div>
+                <br><br>
+                <label style="margin-left: 30px;" for="other-info">Other info:</label><br>
+                <textarea style="margin-left: 30px;" id="student-other-info-text" name="other-info" rows="3" cols="30">
+                </textarea>
+                <br>
+                <br>
+                <label style="margin-left: 30px;" for="select-tutors">Select a tutor:</label>
+                <br>
+                <div style="margin-left: 30px;" class="select-tutors-container">
+                    <br>
+                    <select class="select-tutors" id="select-tutors">
+                        <option>None</option>
+                    </select>
+                    <button type="button" class="select-tutor-button" id="select-tutor-button">Get Shared Info</button>
+                </div>
+                <p id="shared-err"style="color: red; margin-left: 31px; display: none;">Please input required info.</p>
+                <div id="shared-info" style="display: none;">
+                    <h4 style="margin-left: 31px;">Shared Comm. Method: <span style="font-weight: initial;" 
+                        class="shared-comm-val" id="shared-comm-val"></span></h4>
+                    <h4 style="margin-left: 31px;">Shared Subjects: <span style="font-weight: initial;" 
+                        class="shared-subjects-val" id="shared-subjects-val"></span></h4>
+                    <h4 style="margin-left: 31px;">Shared Timings:</h4>
+                    <div id="shared-availability">
+                        <div class="day">
+                        <div class="shared-availability-name">Mon</div>
+                        <div id="monday-shared-timings" class="shared-availability-val"></div>
+                        </div>
+                        <div class="day">
+                        <div class="shared-availability-name">Tues</div>
+                        <div id="tuesday-shared-timings" class="shared-availability-val"></div>
+                        </div>
+                        <div class="day">
+                        <div class="shared-availability-name">Wed</div>
+                        <div id="wednesday-shared-timings" class="shared-availability-val"></div>
+                        </div>
+                        <div class="day">
+                        <div class="shared-availability-name">Thurs</div>
+                        <div id="thursday-shared-timings" class="shared-availability-val"></div>
+                        </div>
+                        <div class="day">
+                        <div class="shared-availability-name">Fri</div>
+                        <div id="friday-shared-timings" class="shared-availability-val"></div>
+                        </div>
+                        <div class="day">
+                        <div class="shared-availability-name">Sat</div>
+                        <div id="saturday-shared-timings" class="shared-availability-val"></div>
+                        </div>
+                        <div class="day">
+                        <div class="shared-availability-name">Sun</div>
+                        <div id="sunday-shared-timings" class="shared-availability-val"></div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div style="margin-left: 30px; display: none;" class="add-student-alert"></div>
+                <input style="margin-left: 30px;" type="submit" value="Submit">
+                <br><br>
+                </form>
+        </div>
+        <div class="find-student-page" id="find-student-page" style='display: none'>
+            <button class="back-button" id="back-find-student-page">Back</button>
+        </div>
+    </div>
+</body>
+</html>
