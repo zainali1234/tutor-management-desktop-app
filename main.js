@@ -7,6 +7,8 @@ const idRegex = /^[0-9a-fA-F]{24}$/;
 const {MongoClient, ServerApiVersion, ObjectId} = require('mongodb');
 const globalClient = {};
 
+const MONGO_CLUSTER_ADDRESS = "" // "@databasename..."
+
 // Creates main window
 function createMainWindow() {
     const mainWindow = new BrowserWindow({
@@ -45,7 +47,7 @@ function createLoginWindow() {
 };
 
 function connectDatabase(username, password) {
-    const uri = `mongodb+srv://${username}:${password}@learnleemain.ygjcnka.mongodb.net/?retryWrites=true&w=majority`;
+    const uri = `mongodb+srv://${username}:${password}` + MongoClusterAddress;
     globalClient.property = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
   
     return new Promise((resolve, reject) => {
@@ -301,154 +303,4 @@ ipcMain.on('remove-student', (event, arg) => {
         }
     });
 });
-
-// ipcMain.on('edit-tutor-in-database', (event, arg) => {
-//     var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
-//     var studentCollection = globalClient.property.db("learnleedatabase").collection("Students");
-
-//     tutorID = arg[0];
-
-//     let findTutorQuery = {_id: ObjectId(tutorID)};
-//     let updateTutorQuery = { $set: { 
-//         name: arg[1], 
-//         email: arg[2],
-//         phone_number: arg[3],
-//         subjects: arg[4],
-//         location_status: arg[5],
-//         mon: arg[6][0],
-//         tues: arg[6][1],
-//         wed: arg[6][2],
-//         thurs: arg[6][3],
-//         fri: arg[6][4],
-//         sat: arg[6][5],
-//         sun: arg[6][6],
-//         other_info: arg[7],
-//     }};
-
-//     tutorCollection.updateOne(findTutorQuery, updateTutorQuery, function(err, result) {
-//         if (err) throw err;
-//         tutorCollection.findOne(findTutorQuery, function(err, updatedDoc) {
-//             if (err) throw err;
-//             if (updatedDoc && updatedDoc.student_ids !== null) {
-//                 try {
-//                     studentCollection.updateMany(
-//                         { _id: { $in: updatedDoc.student_ids} },
-//                         { $set: { tutor_name: updatedDoc.name } }
-//                     );
-//                 } catch(err) {
-//                     throw err;
-//                 }
-//             }
-//         });
-//     });
-// });
-
-// ipcMain.on('edit-student-in-database', (event, arg) => {
-//     var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
-//     var studentCollection = globalClient.property.db("learnleedatabase").collection("Students");
-
-//     studentID = arg[0];
-
-//     if (arg[10] !== "None") {
-//         tutorIDValue = arg[10];
-//         tutorNameValue = arg[11]
-//     }
-//     else {
-//         tutorIDValue = "None"
-//         tutorNameValue = ""
-//     }
-
-//     let findStudentQuery = {_id: ObjectId(studentID)};
-//     let updateStudentQuery = { $set: { 
-//         name: arg[1],
-//         phone_number: arg[2],
-//         parent_name: arg[3],
-//         parent_email: arg[4],
-//         parent_number: arg[5],
-//         subjects: arg[6],
-//         location_status: arg[7],
-//         mon: arg[8][0],
-//         tues: arg[8][1],
-//         wed: arg[8][2],
-//         thurs: arg[8][3],
-//         fri: arg[8][4],
-//         sat: arg[8][5],
-//         sun: arg[8][6],
-//         other_info: arg[9],
-//         tutor_id: tutorIDValue,
-//         tutor_name: tutorNameValue,
-//     }};
-
-//     studentCollection.findOne(findStudentQuery, function(err, prevStudentDoc) {
-//         if (err) throw err;
-//         // update student
-//         studentCollection.updateOne(findStudentQuery, updateStudentQuery, function(err, updatedStudentDoc) {
-//             if (err) throw err;
-//             if (tutorIDValue) {
-//                 try {
-//                     // find the tutor that tutors the student
-//                     tutorCollection.findOne({_id: ObjectId(tutorIDValue)}, function(err, tutorDoc) {
-//                         tutorStudentNames = tutorDoc.student_names;
-//                         tutorStudentIDs = tutorDoc.student_ids;
-//                         temp = "";
-//                         isFound = false;
-
-//                         for (let i = 0; i < tutorStudentNames.length; i++) {
-//                             // compares tutor's students with student name before update
-//                             if (tutorStudentNames[i] === prevStudentDoc.name) {
-//                                 // replace previous student name with new one in tutor collection
-//                                 tutorStudentNames[i] = arg[1];
-//                                 isFound = true;
-//                             };
-//                             temp += tutorStudentNames[i] + " "
-//                         }
-
-//                         if (isFound) {
-//                             tutorCollection.updateOne(
-//                                 { _id: ObjectId(tutorIDValue) },
-//                                 { $set: {student_names: tutorStudentNames } },
-//                             );
-//                         };
-//                     });
-//                 } catch(err) {
-//                     throw err;
-//                 }
-//             }
-//         });
-//         // if tutor change, remove current tutor and add new tutor
-//     });
-
-//     // studentCollection.updateOne(findStudentQuery, updateStudentQuery, function(err, result) {
-//     //     if (err) throw err;
-//     //     prevStudentName = result.name;
-//     //     const win = new BrowserWindow({
-//     //         title: "Here: " + prevStudentName,
-//     //         width: 400,
-//     //         height: 300,
-//     //     });
-//     //     // update student name of the tutor doc
-//     //     studentCollection.findOne(findStudentQuery, function(err, updatedDoc) {
-//     //         if (err) throw err;
-//     //         if (updatedDoc.tutor_id.length > 0) {
-//     //             try {
-//     //                 tutorCollection.findOne({_id: ObjectId(updatedDoc.tutor_id)}, function(err, tutorDoc) {
-//     //                     newStudentNames = tutorDoc.student_names;
-//     //                     for (studentName in newStudentNames) {
-//     //                         if (studentName === prevStudentName) {
-//     //                             studentName = updatedDoc.name;
-//     //                         }
-//     //                     }
-//     //                     tutorCollection.updateOne(
-//     //                         { _id: ObjectId(updatedDoc.tutor_id) },
-//     //                         { $set: {student_names: newStudentNames } },
-//     //                     );
-//     //                 });
-//     //             } catch(err) {
-//     //                 throw err;
-//     //             }
-//     //         }
-//     //     });
-//     //     // if tutor change, remove current tutor and add new tutor
-//     // });
-// });
 
