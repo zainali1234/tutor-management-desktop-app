@@ -47,7 +47,7 @@ function createLoginWindow() {
 };
 
 function connectDatabase(username, password) {
-    const uri = `mongodb+srv://${username}:${password}` + MongoClusterAddress;
+    const uri = `mongodb+srv://${username}:${password}` + MONGO_CLUSTER_ADDRESS;
     globalClient.property = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
   
     return new Promise((resolve, reject) => {
