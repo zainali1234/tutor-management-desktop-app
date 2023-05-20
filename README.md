@@ -1,6 +1,4 @@
 # Tutor Management Desktop App
-This repository contains a tutor management desktop application that helps in managing tutors and students along with their schedules. 
-It provides an interface for tutors and administrators to easily handle various tasks related to tutor management.
 
 ## Features
 - User-friendly interface for managing tutors and students
