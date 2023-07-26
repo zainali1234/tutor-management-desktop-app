@@ -1,13 +1,12 @@
 {
-  "name": "company-app",
-  "productName": "LEARNLEE Tutors App",
+  "name": "tutor-app",
+  "productName": "Tutors App",
   "version": "1.0.0",
-  "description": "App project for company",
+  "description": "App project",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "author": "Zain Ali",
   "license": "MIT",
   "dependencies": {
     "chart.js": "^4.1.2",
