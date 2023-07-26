@@ -12,7 +12,7 @@ const MONGO_CLUSTER_ADDRESS = "" // "@databasename..."
 // Creates main window
 function createMainWindow() {
     const mainWindow = new BrowserWindow({
-        title: 'LEARNLEE Application',
+        title: 'Application',
         width: 1000,
         height: 700,
         webPreferences: {
@@ -30,7 +30,7 @@ function createMainWindow() {
 
 function createLoginWindow() {
     const loginWindow = new BrowserWindow({
-        title: 'LEARNLEE Application Log In',
+        title: 'Application Log In',
         width: 700,
         height: 400,
         webPreferences: {
@@ -118,7 +118,7 @@ app.on('activate', () => {
 });
 
 ipcMain.on('add-tutor-to-database', (event, arg) => {
-    var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
+    var tutorCollection = globalClient.property.db("database").collection("Tutors");
 
     const date = new Date();
     tutorCollection.insertOne({ 
@@ -142,8 +142,8 @@ ipcMain.on('add-tutor-to-database', (event, arg) => {
 });
 
 ipcMain.on('add-student-to-database', (event, arg) => {
-    var studentCollection = globalClient.property.db("learnleedatabase").collection("Students");
-    var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
+    var studentCollection = globalClient.property.db("database").collection("Students");
+    var tutorCollection = globalClient.property.db("database").collection("Tutors");
 
     if (arg[9] !== "None") {
         tutorIDValue = arg[9];
@@ -189,7 +189,7 @@ ipcMain.on('add-student-to-database', (event, arg) => {
 });
 
 ipcMain.on('refresh-tutors', (event) => {
-    var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
+    var tutorCollection = globalClient.property.db("database").collection("Tutors");
     
     try {
         tutorCollection.find().toArray((err, documents) => {
@@ -206,7 +206,7 @@ ipcMain.on('refresh-tutors', (event) => {
 });
 
 ipcMain.on('refresh-students', (event) => {
-    var studentCollection = globalClient.property.db("learnleedatabase").collection("Students");
+    var studentCollection = globalClient.property.db("database").collection("Students");
 
     studentCollection.find().toArray((err, documents) => {
         if (documents) {
@@ -219,7 +219,7 @@ ipcMain.on('refresh-students', (event) => {
 });
 
 ipcMain.on('get-tutor-info', (event, arg) => {
-    var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
+    var tutorCollection = globalClient.property.db("database").collection("Tutors");
     if (typeof arg === "string" && idRegex.test(arg)) {
         try {
             const id = new ObjectId(arg);
@@ -234,7 +234,7 @@ ipcMain.on('get-tutor-info', (event, arg) => {
 });
 
 ipcMain.on('get-student-info', (event, arg) => {
-    var studentCollection = globalClient.property.db("learnleedatabase").collection("Students");
+    var studentCollection = globalClient.property.db("database").collection("Students");
 
     try {
         // code that may throw an exception
@@ -248,8 +248,8 @@ ipcMain.on('get-student-info', (event, arg) => {
 });
 
 ipcMain.on('remove-tutor', (event, arg) => {
-    var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
-    var studentCollection = globalClient.property.db("learnleedatabase").collection("Students");
+    var tutorCollection = globalClient.property.db("database").collection("Tutors");
+    var studentCollection = globalClient.property.db("database").collection("Students");
 
     const findTutorQuery = { _id: ObjectId(arg) };
 
@@ -277,8 +277,8 @@ ipcMain.on('remove-tutor', (event, arg) => {
 });
 
 ipcMain.on('remove-student', (event, arg) => {
-    var tutorCollection = globalClient.property.db("learnleedatabase").collection("Tutors");
-    var studentCollection = globalClient.property.db("learnleedatabase").collection("Students");
+    var tutorCollection = globalClient.property.db("database").collection("Tutors");
+    var studentCollection = globalClient.property.db("database").collection("Students");
 
     let findStudentQuery = { _id: ObjectId(arg) };
 
