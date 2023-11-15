@@ -1,7 +1,7 @@
 # Tutor Management Desktop App
 
 ## Features
-- User-friendly interface for managing tutors and students
+- User friendly interface for managing tutors and students
 - Administrators can manage tutor profiles and schedules
 - Scheduling system for assigning tutors to students based on their weekly availiabilty times
 - Dashboard with general statistics and insights
